@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+reticulate::use_virtualenv("./env", required = TRUE)
+```
+# artm
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of artm is to make possible large scale topic modeling by integrating [BigARTM](http://docs.bigartm.org/en) (**A**dditive **R**egularization of **T**opic **M**odels) with R.
+
+## Installation
+based on a novel technique called 
+Install the package using `remotes`.
+
+``` r
+install.packages("remotes")
+remotes::install_github("news-r/artm")
+```
+
+To install the dependency follow the instructions given on the [official documentation](http://docs.bigartm.org/en/stable/installation/index.html).
+
+## Example
+
+```{r}
+library(artm)
+## basic example code
+```
