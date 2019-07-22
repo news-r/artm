@@ -8,18 +8,20 @@
 \alias{as_preprocessed}
 \title{Preprocess}
 \usage{
-preprocess(text, id = NULL, count = TRUE, file = NULL)
+preprocess(data, ...)
 
-\method{preprocess}{character}(text, id = NULL, count = TRUE,
-  file = NULL)
+\method{preprocess}{character}(data, id = NULL, count = TRUE,
+  file = NULL, ...)
 
 \method{preprocess}{data.frame}(data, text, id = NULL, count = TRUE,
-  file = NULL)
+  file = NULL, ...)
 
 as_preprocessed(file)
 }
 \arguments{
-\item{text}{Text to preprocess.}
+\item{data}{A \code{data.frame} containing \code{text} and (optionally) \code{id} columns.}
+
+\item{...}{Any other argument.}
 
 \item{id}{Unique Document id.}
 
@@ -27,7 +29,7 @@ as_preprocessed(file)
 
 \item{file}{Path to \code{.txt} file where to save results. If omitted results are saved to a temp file.}
 
-\item{data}{A \code{data.frame} containing \code{text} and (optionally) \code{id} columns.}
+\item{text}{Text to preprocess.}
 }
 \description{
 Convert text to \href{https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Input-format}{Vowpal Wabbit} format.

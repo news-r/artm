@@ -3,6 +3,7 @@
 #' Convert text to \href{https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Input-format}{Vowpal Wabbit} format.
 #' 
 #' @param data A \code{data.frame} containing \code{text} and (optionally) \code{id} columns.
+#' @param ... Any other argument.
 #' @param text Text to preprocess.
 #' @param id Unique Document id.
 #' @param count Whether to count term frequency.
@@ -12,22 +13,24 @@
 #'
 #' @name preproc
 #' @export
-preprocess <- function(data, text, id = NULL, count = TRUE, file = NULL) UseMethod("preprocess")
+preprocess <- function(data, ...) UseMethod("preprocess")
 
 #' @rdname preproc
 #' @method preprocess character
 #' @export
-preprocess.character <- function(text, id = NULL, count = TRUE, file = NULL){
-  assert_that(!missing(text), msg = "Missing `text`")
+preprocess.character <- function(data, id = NULL, count = TRUE, file = NULL, ...){
+  assert_that(!missing(data), msg = "Missing `text`")
 
   if(is.null(id))
-    id <- seq(1, length(text))  
+    id <- seq(1, length(data))  
+
+  print(...)
 } 
 
 #' @rdname preproc
 #' @method preprocess data.frame
 #' @export
-preprocess.data.frame <- function(data, text, id = NULL, count = TRUE, file = NULL){
+preprocess.data.frame <- function(data, text, id = NULL, count = TRUE, file = NULL, ...){
   assert_that(!missing(data), msg = "Missing `data`")
   assert_that(!missing(text), msg = "Missing `text`")
   if(is.null(file))
@@ -37,7 +40,7 @@ preprocess.data.frame <- function(data, text, id = NULL, count = TRUE, file = NU
   text_enquo <- rlang::enquo(text)
   id_enquo <- rlang::enquo(id)
 
-  selected <- dplyr::select(data, text = !!text_enquo, id = !!id_enquo)
+  selected <- dplyr::select(data, text = !!text_enquo, id = !!id_enquo, ...)
   if("id" %in% names(selected))
     selected <- dplyr::mutate(selected, id = 1:dplyr::n())
 
