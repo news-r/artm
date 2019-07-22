@@ -71,5 +71,15 @@ as_preprocessed <- function(file){
 }
 
 .as_preprocessed <- function(file, temp = TRUE){
-  structure(list(file = file, temp = temp), class = c(class(file), "preprocess"))
+  x <- structure(list(file = file, temp = temp), class = c(class(file), "preprocess"))
+  invisible(x)
+}
+
+#' @export
+print.preprocess <- function(x){
+  tick_cross <- ifelse(x$temp, crayon::green(cli::symbol$tick), crayon::red(cli::symbol$cross))
+  cat(
+    crayon::blue(cli::symbol$info), "Path:", x$file, "\n",
+    tick_cross, "Temp file", "\n"
+  )
 }
