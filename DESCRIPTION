@@ -13,10 +13,14 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-  cli,
-  rlang,
-  crayon,
-  reticulate,
-  assertthat
+    cli,
+    rlang,
+    dplyr,
+    crayon,
+    magrittr,
+    tidytext,
+    reticulate,
+    assertthat
 URL: https://github.com/news-r/artm
 BugReports: https://github.com/news-r/artm/issues
+RoxygenNote: 6.1.1
