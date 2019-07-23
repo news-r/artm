@@ -23,8 +23,6 @@ preprocess.character <- function(data, id = NULL, count = TRUE, file = NULL, ...
 
   if(is.null(id))
     id <- seq(1, length(data))  
-
-  print(...)
 } 
 
 #' @rdname preproc
@@ -33,6 +31,7 @@ preprocess.character <- function(data, id = NULL, count = TRUE, file = NULL, ...
 preprocess.data.frame <- function(data, text, id = NULL, count = TRUE, file = NULL, ...){
   assert_that(!missing(data), msg = "Missing `data`")
   assert_that(!missing(text), msg = "Missing `text`")
+
   if(is.null(file))
     file <- tempfile(fileext = ".txt")
   
@@ -40,26 +39,22 @@ preprocess.data.frame <- function(data, text, id = NULL, count = TRUE, file = NU
   text_enquo <- rlang::enquo(text)
   id_enquo <- rlang::enquo(id)
 
-  selected <- dplyr::select(data, text = !!text_enquo, id = !!id_enquo, ...)
-  if("id" %in% names(selected))
+  selected <- dplyr::select(data, text = !!text_enquo, id = !!id_enquo)
+  if(!"id" %in% names(selected))
     selected <- dplyr::mutate(selected, id = 1:dplyr::n())
-
-  # tokenize
-  tokenized <- selected %>%  
-    tidytext::unnest_tokens(word, text) 
-  
+ 
+  # tokenize & count  
   if(count)
-    tokenized <- tokenized %>% 
+    prepared <- selected %>%  
+      tidytext::unnest_tokens(word, text) %>% 
       dplyr::count(id, word) %>% 
-      dplyr::arrange(dplyr::desc(id))
-  else
-    tokenized <- tokenized %>% 
-      dplyr::distinct(id, word) %>% 
-      dplyr::arrange(dplyr::desc(id))
+      dplyr::arrange(id)
 
   out <- .as_preprocessed(file)
 
-  write(tokenized, file = file)
+  vw <- .vowpal_wabbit(prepared)
+
+  write(vw, file = file)
   invisible(out)
 }
 
@@ -71,15 +66,23 @@ as_preprocessed <- function(file){
 }
 
 .as_preprocessed <- function(file, temp = TRUE){
-  x <- structure(list(file = file, temp = temp), class = c(class(file), "preprocess"))
+  x <- structure(list(file = file, temp = temp), class = c(class(file), "preprocessed"))
+  options(LAST_PREPROCESSED_FILE = file)
   invisible(x)
 }
 
 #' @export
-print.preprocess <- function(x){
+print.preprocessed <- function(x, ...){
   tick_cross <- ifelse(x$temp, crayon::green(cli::symbol$tick), crayon::red(cli::symbol$cross))
   cat(
     crayon::blue(cli::symbol$info), "Path:", x$file, "\n",
     tick_cross, "Temp file", "\n"
   )
+}
+
+.vowpal_wabbit <- function(prepared){
+  if("n" %in% names(prepared))
+    glue::glue_data(prepared, "{id} {word}:{n}")
+  else 
+    glue::glue_data(prepared, "{id} {word}")
 }

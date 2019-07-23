@@ -2,9 +2,10 @@
 
 S3method(preprocess,character)
 S3method(preprocess,data.frame)
-S3method(print,preprocess)
+S3method(print,preprocessed)
 export("%>%")
 export(as_preprocessed)
+export(batch_vectorizer)
 export(preprocess)
 import(assertthat)
 importFrom(magrittr,"%>%")

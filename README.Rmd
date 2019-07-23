@@ -12,21 +12,22 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-reticulate::use_virtualenv("./env", required = TRUE)
+reticulate::use_python("usr/local/bin/python3.6")
 ```
 # artm
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of artm is to make possible large scale topic modeling by integrating [BigARTM](http://docs.bigartm.org/en) (**A**dditive **R**egularization of **T**opic **M**odels) with R.
+The goal of artm is to integrate by integrating [BigARTM](http://bigartm.org/) (**A**dditive **R**egularization of **T**opic **M**odels) with R.
 
 ## Installation
-based on a novel technique called 
+
 Install the package using `remotes`.
 
 ``` r
-install.packages("remotes")
+# install.packages("remotes")
 remotes::install_github("news-r/artm")
 ```
 
@@ -34,7 +35,20 @@ To install the dependency follow the instructions given on the [official documen
 
 ## Example
 
+Use data from another [news-r](https://news-r.org) package.
+
+```{r}
+# remotes::install_github("news-r/nethoser")
+data("webhoser", package = "nethoser")
+```
+
+Preprocess.
+
 ```{r}
 library(artm)
-## basic example code
+
+# Preprocess returns path to file
+(file <- preprocess(webhoser, text))
+
+batch_vectorizer(file)
 ```
