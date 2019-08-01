@@ -1,30 +1,15 @@
----
-output: 
-  github_document:
-    html_preview: false
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-
-reticulate::use_python("usr/local/bin/python3.6")
-```
-# artm
+artm
+====
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-<!-- badges: end -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) <!-- badges: end -->
 
 The goal of artm is to integrate by integrating [BigARTM](http://bigartm.org/) (**A**dditive **R**egularization of **T**opic **M**odels) with R.
 
-## Installation
+Installation
+------------
 
 Install the package using `remotes`.
 
@@ -35,18 +20,19 @@ remotes::install_github("news-r/artm")
 
 To install the dependency follow the instructions given on the [official documentation](http://docs.bigartm.org/en/stable/installation/index.html).
 
-## Example
+Example
+-------
 
 Use data from another [news-r](https://news-r.org) package.
 
-```{r}
+``` r
 # remotes::install_github("news-r/nethoser")
 data("webhoser", package = "nethoser")
 ```
 
 Preprocess.
 
-```r
+``` r
 library(artm)
 
 # Preprocess returns path to file
